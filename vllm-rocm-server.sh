@@ -2,7 +2,7 @@
 
 PORT=8000
 TP=8
-MODEL="../DeepSeekTerminus"
+MODEL="deepseek-ai/DeepSeek-V3.1-Terminus"
 
 MAX_MODEL_LEN=10240
 MAX_NUM_SEQS=256

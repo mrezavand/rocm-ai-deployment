@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODEL="../DeepSeekTerminus"
+MODEL="deepseek-ai/DeepSeek-V3.1-Terminus"
 IN=1024
 OUT=1024
 NP=96

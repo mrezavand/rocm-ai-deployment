@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DOCKER_IMAGE="vllm/vllm-openai-rocm:nightly"
-HF_TOKEN="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"
+HF_TOKEN="hf_xyz"
 
 sudo docker run --rm -it \
     --name vllm-rocm \
