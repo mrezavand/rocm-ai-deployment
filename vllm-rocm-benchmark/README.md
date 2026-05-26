@@ -23,7 +23,7 @@ The workflow has three steps:
 
 ### Software (host)
 - Linux with ROCm-compatible kernel and `amdgpu` driver installed.
-- Docker (with `--device /dev/kfd` and `/dev/dri` access).
+- Docker (with `--device /dev/kfd` and `/dev/dri` access). To install Docker, please see [This page](https://docs.docker.com/engine/install/).  
 - Network access to `huggingface.co` (or pre-staged weights).
 
 ### Accounts / Tokens
