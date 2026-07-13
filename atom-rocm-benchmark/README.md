@@ -16,3 +16,68 @@ The workflow has three steps:
 
 ---
 
+## Step 1 - Launch the ATOM ROCm Container
+
+The script `atom-rocm-docker.sh` contains all the requirements to run the `rocm/atom-dev:latest` container. Run `bash atom-rocm-docker.sh`
+
+You will land at a shell prompt **inside the container** (`root@<host>:/workspace#`). Keep this terminal open — Steps 2 and 3 run inside it (or in `docker exec` sessions into the same container).
+
+### Verify GPUs are visible
+
+```bash
+amd-smi
+# You should see 8 MI355X devices listed.
+```
+
+### (Optional) Pre-stage the model as a local alias `GLM-5.2-FP8`
+
+Steps 2 and 3 reference the model as `GLM-5.2-FP8`. The simplest way is to download once and create a symlink so ATOM serves it under that short name:
+
+```bash
+# Inside the container
+huggingface-cli download zai-org/GLM-5.2-FP8 \
+    --local-dir /root/.cache/huggingface/GLM-52-FP8 \
+    --local-dir-use-symlinks False
+```
+
+Then in Steps 2 and 3, set:
+
+```bash
+MODEL="/root/.cache/huggingface/GLM-52-FP8"
+```
+
+Alternatively, just use the full HF repo ID directly:
+
+```bash
+MODEL="zai-org/GLM-5.2-FP8"
+```
+
+---
+
+## Step 2 - Start the ATOM Server
+
+Use the script `atom-rocm-server.sh` for this purpose. Run `bash atom-rocm-server.sh`.
+Wait until the server is initiated.
+
+### Quick sanity check (in a second terminal, inside the container)
+
+```
+curl http://localhost:8000/v1/chat/completions   -H "Content-Type: application/json"   -d '{
+    "model": "zai-org/GLM-5.2-FP8",
+    "messages": [
+      {"role": "user", "content": "Hello DeepSeek, confirm you are working."}
+    ],
+    "max_tokens": 15
+  }'
+```
+
+## Step 3 - Run the Online Benchmark
+
+In a second terminal enter the container by `docker exec -it <containerID> bash`, then use the script `atom-rocm-bench.sh` to start the benchmark. Run `bash atom-rocm-bench.sh`.
+
+### Metrics reported
+
+- **TTFT** — Time To First Token (s)
+- **TPOT** — Time Per Output Token (s/token, after first)
+- **ITL**  — Inter-Token Latency (s)
+- **E2EL** — End-to-End Latency per request (s)
