@@ -19,7 +19,7 @@ sudo docker run --rm -it \
     -v /home/amd/vllm-test:/workspace/scripts \
     -w /workspace \
     -e HF_TOKEN=${HF_TOKEN} \
-    -e ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+    -e HIP_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
     --entrypoint /bin/bash \
     ${DOCKER_IMAGE}
   
